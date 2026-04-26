@@ -1,12 +1,17 @@
-import { Worker } from 'bullmq'
-import { buildApp } from './app.js'
+import { Worker, type Job } from 'bullmq'
+import { buildWorkerApp } from './app.js'
 import { loadConfig } from './config/env.js'
-import { EXAMPLE_QUEUE_NAME, createExampleDeadLetterQueue, createRedisConnection, type ExampleJobData } from './lib/queue.js'
+import {
+  EXAMPLE_QUEUE_NAME,
+  createExampleDeadLetterQueue,
+  createRedisConnection,
+  type ExampleJobData,
+} from './lib/queue.js'
 import { processExampleJob } from './modules/jobs/service.js'
 
 async function startWorker() {
   const config = loadConfig()
-  const app = await buildApp(config)
+  const app = await buildWorkerApp(config)
   const workerConnection = createRedisConnection(config.REDIS_URL)
   const deadLetterConnection = createRedisConnection(config.REDIS_URL)
   const deadLetterQueue = createExampleDeadLetterQueue(deadLetterConnection)
@@ -18,7 +23,7 @@ async function startWorker() {
     },
     {
       connection: workerConnection,
-      concurrency: 1,
+      concurrency: config.WORKER_CONCURRENCY,
     },
   )
 
@@ -30,7 +35,7 @@ async function startWorker() {
     app.log.info({ jobId: job.id }, 'Example job completed')
   })
 
-  worker.on('failed', async (job, error) => {
+  async function handleFailedJob(job: Job<ExampleJobData> | undefined, error: Error) {
     app.log.error({ err: error, jobId: job?.id }, 'Example job failed')
 
     if (!job?.data?.jobId) {
@@ -43,12 +48,17 @@ async function startWorker() {
         jobId: job.data.jobId,
         message: job.data.message,
         reason: error.message,
+        failedAt: new Date().toISOString(),
       },
       {
-        removeOnComplete: 500,
-        removeOnFail: 500,
+        removeOnComplete: config.DLQ_REMOVE_ON_COMPLETE,
+        removeOnFail: config.DLQ_REMOVE_ON_FAIL,
       },
     )
+  }
+
+  worker.on('failed', (job, error) => {
+    void handleFailedJob(job, error)
   })
 
   const shutdown = async () => {
@@ -70,7 +80,7 @@ async function startWorker() {
   })
 }
 
-void startWorker().catch((error) => {
+void startWorker().catch((error: unknown) => {
   console.error(error)
   process.exit(1)
 })

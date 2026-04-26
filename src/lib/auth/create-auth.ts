@@ -5,7 +5,12 @@ import { getPrismaClient } from '../prisma.js'
 import { sendEmail } from '../email.js'
 import { buildSocialProviders, buildTrustedOrigins } from './social-providers.js'
 
-function renderEmailLayout(title: string, body: string, ctaUrl: string, ctaLabel: string): { html: string; text: string } {
+function renderEmailLayout(
+  title: string,
+  body: string,
+  ctaUrl: string,
+  ctaLabel: string,
+): { html: string; text: string } {
   return {
     html: `
       <div style="font-family: Arial, sans-serif; max-width: 560px; margin: 0 auto; padding: 24px; color: #111827;">

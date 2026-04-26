@@ -14,7 +14,7 @@ export async function enqueueExampleJob(app: FastifyInstance, message: string) {
       jobId: exampleJob.id,
       message,
     },
-    createExampleJobOptions(exampleJob.id),
+    createExampleJobOptions(app.config, exampleJob.id),
   )
 
   return exampleJob

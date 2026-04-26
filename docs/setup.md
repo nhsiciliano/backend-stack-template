@@ -59,3 +59,9 @@ Worker:
 ```bash
 npm run dev:worker
 ```
+
+## Quality
+
+```bash
+npm run check
+```

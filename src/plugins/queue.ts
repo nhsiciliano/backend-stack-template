@@ -1,6 +1,11 @@
 import fp from 'fastify-plugin'
 import type { FastifyPluginAsync } from 'fastify'
-import { createExampleDeadLetterQueue, createExampleQueue, createExampleQueueEvents, createRedisConnection } from '../lib/queue.js'
+import {
+  createExampleDeadLetterQueue,
+  createExampleQueue,
+  createExampleQueueEvents,
+  createRedisConnection,
+} from '../lib/queue.js'
 
 const queuePlugin: FastifyPluginAsync = async (fastify) => {
   const queueConnection = createRedisConnection(fastify.config.REDIS_URL)

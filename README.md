@@ -7,6 +7,7 @@ A production-oriented backend template with Fastify, TypeScript, Better Auth, Pr
 - Fastify 5
 - TypeScript
 - Better Auth with Prisma adapter
+- Organization, RBAC, API key, and audit-log foundations
 - Prisma + PostgreSQL
 - Supabase Postgres and Storage
 - Resend email delivery
@@ -41,10 +42,14 @@ npm run dev:worker
 
 - `GET /`
 - `GET /health`
+- `GET /docs` when `ENABLE_API_DOCS=true`
+- `GET /openapi.json` when `ENABLE_API_DOCS=true`
 - `GET|POST|OPTIONS /auth/*`
 - `POST /jobs/example`
 - `GET /jobs/:id`
 - `GET /dev/config` when `ENABLE_DEV_ROUTES=true`
+
+Internal operations are protected with `x-internal-api-key`. See `docs/security-saas.md`.
 
 ## Generate Modules
 
@@ -55,6 +60,14 @@ npm run generate:module -- products
 This creates `src/modules/products` and registers `GET /products/status` automatically.
 
 See `docs/dx.md` for the recommended backend creation workflow.
+
+## Quality Gate
+
+```bash
+npm run check
+```
+
+See `docs/product-quality.md` for test, lint, formatting, OpenAPI, and CI details.
 
 ## Auth
 
@@ -74,6 +87,8 @@ openssl rand -base64 32
 ## Background Jobs
 
 The API enqueues jobs into Redis with BullMQ. The worker processes the same queue with `npm run start:worker`.
+
+API and worker runtimes are separated so they can scale independently. See `docs/scaling.md` for worker tuning, DLQ operations, and queue conventions.
 
 ## Production Hardening
 

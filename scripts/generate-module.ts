@@ -80,7 +80,7 @@ if (routesFile.includes(importLine) || routesFile.includes(registerLine)) {
 
 const updatedRoutesFile = routesFile
   .replace(/(import .+root\/routes\.js'\n)/, `$1${importLine}\n`)
-  .replace(/(  await app\.register\(jobsRoutes\)\n)/, `$1${registerLine}\n`)
+  .replace(/( {2}await app\.register\(jobsRoutes\)\n)/, `$1${registerLine}\n`)
 
 if (updatedRoutesFile === routesFile) {
   fail('Could not update src/routes.ts. Register the module manually.')

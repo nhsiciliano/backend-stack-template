@@ -15,7 +15,7 @@ const authRoutes: FastifyPluginAsync = async (fastify) => {
       const req = new Request(url.toString(), {
         method: request.method,
         headers,
-        ...((request.method === 'GET' || request.method === 'HEAD' || request.method === 'OPTIONS')
+        ...(request.method === 'GET' || request.method === 'HEAD' || request.method === 'OPTIONS'
           ? {}
           : { body: JSON.stringify(request.body ?? {}) }),
       })

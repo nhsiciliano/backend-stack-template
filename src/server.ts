@@ -1,9 +1,9 @@
-import { buildApp } from './app.js'
+import { buildHttpApp } from './app.js'
 import { loadConfig } from './config/env.js'
 
 async function startServer() {
   const config = loadConfig()
-  const app = await buildApp(config)
+  const app = await buildHttpApp(config)
 
   const shutdown = async () => {
     app.log.info('Shutting down HTTP server')
@@ -22,7 +22,7 @@ async function startServer() {
   await app.listen({ host: config.HOST, port: config.PORT })
 }
 
-void startServer().catch((error) => {
+void startServer().catch((error: unknown) => {
   console.error(error)
   process.exit(1)
 })

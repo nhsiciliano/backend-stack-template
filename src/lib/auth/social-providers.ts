@@ -61,7 +61,7 @@ export async function buildSocialProviders(config: AppConfig): Promise<SocialPro
     socialProviders.microsoft = {
       clientId: config.MICROSOFT_CLIENT_ID,
       clientSecret: config.MICROSOFT_CLIENT_SECRET,
-      tenantId: config.MICROSOFT_TENANT_ID || 'common',
+      tenantId: config.MICROSOFT_TENANT_ID ?? 'common',
       authority: 'https://login.microsoftonline.com',
       prompt: 'select_account',
     }

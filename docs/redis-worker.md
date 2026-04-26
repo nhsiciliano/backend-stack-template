@@ -26,3 +26,7 @@ Run API and worker as separate processes. Both need the same:
 - Supabase variables
 
 Only the API needs public networking.
+
+Tune worker throughput with `WORKER_CONCURRENCY`. Scale worker replicas horizontally before increasing concurrency for CPU-bound jobs.
+
+Dead-letter queue operations are available through protected internal endpoints documented in `docs/scaling.md`.

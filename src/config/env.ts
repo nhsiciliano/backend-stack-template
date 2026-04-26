@@ -20,7 +20,9 @@ const envSchemaDefinition = Type.Object({
   RATE_LIMIT_MAX: Type.Number({ default: 300 }),
   RATE_LIMIT_WINDOW: Type.String({ default: '1 minute' }),
   ENABLE_SECURITY_HEADERS: Type.Boolean({ default: true }),
+  ENABLE_API_DOCS: Type.Boolean({ default: true }),
   ENABLE_DEV_ROUTES: Type.Boolean({ default: true }),
+  REQUIRE_DEV_ROUTE_AUTH: Type.Boolean({ default: true }),
   CORS_ORIGIN: Type.String({ default: 'http://localhost:3000' }),
   TRUSTED_ORIGINS: Type.Optional(Type.String()),
   DATABASE_URL: Type.String(),
@@ -44,6 +46,14 @@ const envSchemaDefinition = Type.Object({
   SUPABASE_SERVICE_ROLE_KEY: Type.String(),
   SUPABASE_UPLOADS_BUCKET: Type.String({ default: 'uploads' }),
   REDIS_URL: Type.String(),
+  WORKER_CONCURRENCY: Type.Number({ default: 1 }),
+  JOB_ATTEMPTS: Type.Number({ default: 2 }),
+  JOB_BACKOFF_DELAY_MS: Type.Number({ default: 1000 }),
+  JOB_REMOVE_ON_COMPLETE: Type.Number({ default: 100 }),
+  JOB_REMOVE_ON_FAIL: Type.Number({ default: 100 }),
+  DLQ_REMOVE_ON_COMPLETE: Type.Number({ default: 500 }),
+  DLQ_REMOVE_ON_FAIL: Type.Number({ default: 500 }),
+  INTERNAL_API_KEY: Type.Optional(Type.String({ minLength: 32 })),
 })
 
 export type AppConfig = Static<typeof envSchemaDefinition>
