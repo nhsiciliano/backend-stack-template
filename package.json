@@ -1,0 +1,48 @@
+{
+  "name": "backend-stack-template",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "dev:worker": "tsx watch src/worker.ts",
+    "dev:services": "docker compose up -d postgres redis",
+    "dev:services:down": "docker compose down",
+    "setup:local": "npm install && npm run dev:services && npm run prisma:generate && npm run prisma:migrate",
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/server.js",
+    "start:worker": "node dist/worker.js",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev",
+    "prisma:deploy": "prisma migrate deploy",
+    "generate:module": "tsx scripts/generate-module.ts",
+    "auth:generate": "npx @better-auth/cli@latest generate --config src/auth.ts"
+  },
+  "dependencies": {
+    "@better-auth/prisma-adapter": "^1.5.6",
+    "@fastify/cors": "^11.0.0",
+    "@fastify/helmet": "^13.0.2",
+    "@fastify/rate-limit": "^10.3.0",
+    "@fastify/type-provider-typebox": "^5.1.0",
+    "@prisma/client": "^6.6.0",
+    "@sinclair/typebox": "^0.34.31",
+    "@supabase/supabase-js": "^2.101.1",
+    "better-auth": "^1.5.6",
+    "bullmq": "^5.73.0",
+    "dotenv": "^17.4.0",
+    "env-schema": "^5.2.0",
+    "fastify": "^5.2.1",
+    "fastify-plugin": "^5.0.1",
+    "ioredis": "^5.10.1",
+    "jose": "^6.2.2",
+    "resend": "^6.10.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.14",
+    "prisma": "^6.6.0",
+    "supabase": "^2.84.10",
+    "tsx": "^4.19.3",
+    "typescript": "^5.8.2"
+  }
+}
