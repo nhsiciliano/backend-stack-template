@@ -11,7 +11,10 @@ export async function registerRoutes(app: FastifyInstance): Promise<void> {
   await app.register(rootRoutes)
   await app.register(healthRoutes)
   await app.register(jobsRoutes)
-  await app.register(securityRoutes)
+
+  if (app.config.ENABLE_INTERNAL_ROUTES) {
+    await app.register(securityRoutes)
+  }
 
   if (app.config.ENABLE_DEV_ROUTES) {
     await app.register(devRoutes)

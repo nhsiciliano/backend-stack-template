@@ -21,6 +21,7 @@ const envSchemaDefinition = Type.Object({
   RATE_LIMIT_WINDOW: Type.String({ default: '1 minute' }),
   ENABLE_SECURITY_HEADERS: Type.Boolean({ default: true }),
   ENABLE_API_DOCS: Type.Boolean({ default: true }),
+  ENABLE_INTERNAL_ROUTES: Type.Boolean({ default: true }),
   ENABLE_DEV_ROUTES: Type.Boolean({ default: true }),
   REQUIRE_DEV_ROUTE_AUTH: Type.Boolean({ default: true }),
   CORS_ORIGIN: Type.String({ default: 'http://localhost:3000' }),
